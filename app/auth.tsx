@@ -18,6 +18,35 @@ type AuthStep = 'EMAIL' | 'OTP' | 'PASSWORD';
 
 const { width } = Dimensions.get('window');
 
+const parseApiResponse = async (response: Response) => {
+    const rawText = await response.text();
+    const contentType = response.headers.get('content-type') || '';
+    const isJson = contentType.includes('application/json');
+
+    let data: any = null;
+    if (rawText) {
+        if (isJson) {
+            try {
+                data = JSON.parse(rawText);
+            } catch {
+                throw new Error(`Invalid JSON response (${response.status}): ${rawText.slice(0, 160)}`);
+            }
+        } else {
+            data = { detail: rawText };
+        }
+    }
+
+    if (!response.ok) {
+        const message =
+            data?.detail ||
+            data?.message ||
+            `Request failed with status ${response.status}`;
+        throw new Error(message);
+    }
+
+    return data;
+};
+
 export default function AuthScreen() {
     const { setIsLoggedIn } = useAuth();
     const router = useRouter();
@@ -116,8 +145,7 @@ export default function AuthScreen() {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password, role: 'USER' }),
                 });
-                const data = await response.json();
-                if (!response.ok) throw new Error(data.detail || 'Login failed');
+                const data = await parseApiResponse(response);
                 await saveSession(data);
 
             } else {
@@ -160,8 +188,7 @@ export default function AuthScreen() {
                     purpose: mode === 'forgot' ? 'RESET' : 'LOGIN'
                 }),
             });
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.detail || 'Failed to send OTP');
+            await parseApiResponse(response);
 
             setStep('OTP');
             showAlert('success', 'OTP Sent', 'Please check your email for the verification code.');
@@ -189,8 +216,7 @@ export default function AuthScreen() {
                     role: 'USER',
                 }),
             });
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.detail || 'Verification failed');
+            const data = await parseApiResponse(response);
 
             // Store token immediately
             await SecureStore.setItemAsync('token', data.access_token);
@@ -243,8 +269,7 @@ export default function AuthScreen() {
                 },
                 body: JSON.stringify({ password }),
             });
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.detail || 'Failed to set password');
+            await parseApiResponse(response);
 
             showAlert('success', 'Success', mode === 'forgot' ? 'Password reset successful!' : 'Account updated successfully!');
             router.replace('/location');

@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Showtime",
-    "slug": "showtime",
+    "slug": "show-go",
     "version": "1.0.0",
     "scheme": "showtime",
     "orientation": "portrait",
@@ -15,7 +15,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.saikiran_18.showtime",
+      "bundleIdentifier": "com.saikiran17.showtime",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
         "NSAppTransportSecurity": {
@@ -28,7 +28,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000000"
       },
-      "package": "com.saikiran_18.showtime"
+      "package": "com.saikiran_17.showtime"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -51,9 +51,9 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "e4dbc728-4011-4987-b92a-1ce053971132"
+        "projectId": "bf9030f6-cf01-40ad-a741-19354e4637dd"
       }
     },
-    "owner": "saikiran_18"
+    "owner": "saikiran_17"
   }
 }

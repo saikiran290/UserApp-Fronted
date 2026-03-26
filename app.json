@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Show time",
-    "slug": "my-app",
+    "slug": "frontend",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -68,7 +68,7 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "be2f2ed6-e4a5-4042-90c1-2089c3c94581"
+        "projectId": "70f97987-75c5-4eba-950d-262efe45da98"
       }
     },
     "owner": "saikiran_01"
